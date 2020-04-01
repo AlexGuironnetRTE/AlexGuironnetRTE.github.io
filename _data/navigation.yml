@@ -1,0 +1,28 @@
+- title: Home
+  url: /
+
+- title: Getting Started
+  url: /documentation/getting_started
+
+- title: Documentation
+  url: /documentation/single_page_doc.html
+  sublinks:
+    - title: Architecture
+      url: /documentation/architecture
+    - title: Reference documentation
+      url: /documentation/reference_doc
+    - title: Deployment
+      url: /documentation/deployment
+    - title: CICD
+      url: /documentation/CICD
+    - title: Development Environment
+      url: /documentation/dev_env
+
+- title: Community
+  url: /documentation/community
+
+- title: Release notes
+  url: /documentation/release_notes
+
+- title: Roadmap
+  url: /documentation/ROADMAP.html
