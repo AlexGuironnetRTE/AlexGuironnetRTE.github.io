@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>Untitled</title>
+<title>OperatorFabric Reference Documentation</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -437,13 +437,68 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body class="article">
+<body class="article toc2 toc-left">
 <div id="header">
+<h1>OperatorFabric Reference Documentation</h1>
+<div class="details">
+<span id="revnumber">version 1.0.0.RELEASE,</span>
+<span id="revdate">09 March 2020</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_introduction">1. Introduction</a></li>
+<li><a href="#_a_quick_walk_through_the_user_interface">2. A quick walk through the user interface</a></li>
+<li><a href="#_technical_overview">3. Technical overview</a></li>
+<li><a href="#_thirds_service">4. Thirds service</a>
+<ul class="sectlevel2">
+<li><a href="#_declaring_a_third_party_service">4.1. Declaring a Third Party Service</a></li>
+<li><a href="#_bundle_technical_overview">4.2. Bundle Technical overview</a></li>
+</ul>
+</li>
+<li><a href="#_operatorfabric_users_service">5. OperatorFabric Users Service</a>
+<ul class="sectlevel2">
+<li><a href="#_users_and_groups">5.1. Users and Groups</a></li>
+</ul>
+</li>
+<li><a href="#_cards_publication_service">6. Cards Publication Service</a>
+<ul class="sectlevel2">
+<li><a href="#_card_structure">6.1. Card Structure</a></li>
+<li><a href="#_cards_examples">6.2. Cards Examples</a></li>
+</ul>
+</li>
+<li><a href="#_cards_consultation_service">7. Cards Consultation Service</a>
+<ul class="sectlevel2">
+<li><a href="#_archived_cards">7.1. Archived Cards</a></li>
+</ul>
+</li>
+</ul>
+</div>
 </div>
 <div id="content">
+<div id="preamble">
+<div class="sectionbody">
 <div class="paragraph">
-<p>Imagedir is ../images</p>
+<p>The aim of this document is to:</p>
 </div>
+<div class="ulist">
+<ul>
+<li>
+<p>Explain what OperatorFabric is about and define the concepts it relies on</p>
+</li>
+<li>
+<p>Give a basic tour of its features from a user perspective</p>
+</li>
+<li>
+<p>Describe the technical implementation that makes it possible</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_introduction">1. Introduction</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>To perform their duties, an operator has to interact with multiple applications
 (perform actions, watch for alerts, etc.), which can prove difficult if
@@ -535,10 +590,2043 @@ the Archives screen, showing how the
 operators reached this agreement.</p>
 </div>
 </div>
+</div>
+<div class="sect1">
+<h2 id="_a_quick_walk_through_the_user_interface">2. A quick walk through the user interface</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Work in progress</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_technical_overview">3. Technical overview</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_thirds_service">4. Thirds service</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As stated above, third-party applications (or "thirds" for short) interact with OperatorFabric by sending cards.
+The Thirds service allows them to tell OperatorFabric</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>how these cards should be rendered</p>
+</li>
+<li>
+<p>what actions should be made available to the operators regarding a given card</p>
+</li>
+<li>
+<p>if several languages are supported, how cards should be translated</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In addition, it lets third-party applications define additional menu entries for the navbar (for example linking back
+to the third-party application) that can be integrated either as iframe or external links.</p>
+</div>
+<div class="sect2">
+<h3 id="_declaring_a_third_party_service">4.1. Declaring a Third Party Service</h3>
+<div class="paragraph">
+<p>This sections explains Third Party Service Configuration</p>
+</div>
+<div class="paragraph">
+<p>The third party service configuration is declared using a bundle which is described below.
+Once this bundle fully created, it must be uploaded to the server which will apply this configuration into current
+for further web UI calls.</p>
+</div>
+<div class="paragraph">
+<p>The way configuration is done is explained throughout examples before a more technical review of the configuration details.
+The following instructions describe tests to perform on OperatorFabric to understand how customization is working in it.
+The card data used here are send automatically using a script as describe here <a href="#CardSendingScript">Cards sending script</a>.</p>
+</div>
+<div class="sect3">
+<h4 id="_requirements">4.1.1. Requirements</h4>
+<div class="paragraph">
+<p>Those examples are played in an environment where an OperatorFabric instance (all micro-services) is running along
+a MongoDB Database and a RabbitMQ instances.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_bundle">4.1.2. Bundle</h4>
+<div class="paragraph">
+<p>Third bundles customize the way third card details are displayed. Those <code>tar.gz</code> archives contain a descriptor file
+named <code>config.json</code>, eventually some <code>css files</code>, <code>i18n files</code> and <code>handlebars templates</code> to do so.</p>
+</div>
+<div class="paragraph">
+<p>For didactic purposes, in this section, the third name is <code>BUNDLE_TEST</code> (to match the parameters used by the script).
+This bundle is localized for <code>en</code> and <code>fr</code>.</p>
+</div>
+<div class="paragraph">
+<p>As detailed in the <code>Third core service README</code> the bundle contains at least a metadata file called <code>config.json</code>,
+a <code>css</code> folder, a <code>media</code> folder (not created in this example), an <code>i18n</code> folder and a <code>template</code> folder.
+ All elements except the <code>config.json file</code> are optional.</p>
+</div>
+<div class="paragraph">
+<p>The files of this example are organized as below:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>bundle
+├── config.json
+├── css
+│   └── bundleTest.css
+├── i18n
+│   ├── en.json
+│   └── fr.json
+└── template
+    ├── en
+    │   ├── template1.handlebars
+    │   └── template2.handlebars
+    └── fr
+        ├── template1.handlebars
+        └── template2.handlebars</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To summarize, there are 5 directories and 8 files.</p>
+</div>
+<div class="sect4">
+<h5 id="_the_config_json_file">The config.json file</h5>
+<div class="paragraph">
+<p>It&#8217;s a description file in <code>json</code> format. It lists the content of the bundle.</p>
+</div>
+<div class="paragraph">
+<p><strong>example</strong></p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{
+  "name": "BUNDLE_TEST",
+  "version": "1",
+  "csses": [
+    "bundleTest"
+  ],
+  "i18nLabelKey": "third-name-in-menu-bar",
+  "menuEntries": [
+    {
+      "id": "uid test 0",
+      "url": "https://opfab.github.io/whatisopfab/",
+      "label": "first-menu-entry"
+    },
+    {
+      "id": "uid test 0",
+      "url": "https://www.lfenergy.org/",
+      "label": "b-menu-entry"
+    },
+    {
+      "id": "uid test 1",
+      "url": "https://github.com/opfab/opfab.github.io",
+      "label": "the-other-menu-entry"
+    }
+  ],
+  "processes" : {
+      "simpleProcess" : {
+        "start" : {
+          "details" : [ {
+            "title" : {
+              "key" : "start.first.title"
+            },
+            "titleStyle" : "startTitle text-danger",
+            "templateName" : "template1"
+          } ],
+          "actions" : {
+            "finish" : {
+              "type" : "URL",
+              "url": "http://somewher.org/simpleProcess/finish",
+              "lockAction" : true,
+              "called" : false,
+              "updateStateBeforeAction" : false,
+              "hidden" : true,
+              "buttonStyle" : "buttonClass",
+              "label" : {
+                "key" : "my.card.my.action.label"
+              },
+            }
+          }
+        },
+        "end" : {
+          "details" : [ {
+            "title" : {
+              "key" : "end.first.title"
+            },
+            "titleStyle" : "startTitle text-info",
+            "templateName" : "template2",
+            "styles" : [ "bundleTest.css" ]
+          } ]
+        }
+      }
+    }
+}</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>name: third name;</p>
+</li>
+<li>
+<p>version: enable the correct display, even the old ones as all versions are stored by the server. Your <strong>card</strong> has a version
+field that will be matched to third configuration for correct rendering ;</p>
+</li>
+<li>
+<p>processes : list the available processes and their possible states; actions and templates are associated to states</p>
+</li>
+<li>
+<p>css file template list as <code>csses</code>;</p>
+</li>
+<li>
+<p>third name in the main bar menu as <code>i18nLabelKey</code>: optional, used if the third service add one or several entry in the OperatorFabric main menu bar,cf <a href="#MenuEntries">menu entries section for details</a>;</p>
+</li>
+<li>
+<p>extra menu entries as <code>menuEntries</code>: optional, see below for the declaration format of objects of this array, cf <a href="#MenuEntries">menu entries section for details</a>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The mandatory declarations are <code>name</code> and <code>version</code> attributes.</p>
+</div>
+<div class="paragraph">
+<p><a href="../api/#Third">related api details</a></p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_i18n">i18n</h5>
+<div class="paragraph">
+<p>There are two ways of i18n for third service. The first one is done using l10n files which are located in the <code>i18n</code> folder, the second one throughout l10n name folder nested in the <code>template</code> folder or in the <code>media</code> folder.</p>
+</div>
+<div class="paragraph">
+<p>The <code>i18n</code> folder contains one json file per l10n.</p>
+</div>
+<div class="paragraph">
+<p>These localisation is used for integration of the third service into OperatorFabric, i.e. the label displayed for the third service, the label displayed for each tab of the details of the third card, the label of the actions in cards if any or the additional third entries in OperatorFabric(more on that at the chapter ????).</p>
+</div>
+<div class="sect5">
+<h6 id="_template_and_media_folders">Template and Media folders</h6>
+<div class="paragraph">
+<p>The <code>template</code> and the <code>media</code> folder must contain localized folder for the i18n of the card details. This is why in our example, as the bundle is localized for <code>en</code> and <code>fr</code> language, the <code>template</code> folder contains a <code>en</code> and a <code>fr</code> folder.</p>
+</div>
+<div class="sect6">
+<h7 id="_i18n_file">i18n file</h7>
+<div class="paragraph">
+<p>If there is no i18n file or key is missing, the i18n key is displayed in OperatorFabric.</p>
+</div>
+<div class="paragraph">
+<p>The choice of i18n keys is left to the Third service maintainer. The keys are referenced in the following places:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>config.json</code> file:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>i18nLabelKey</code>: key used for the label for the third service displayed in the main menu bar of OperatorFabric;</p>
+</li>
+<li>
+<p><code>label</code> of <code>menu entry declaration</code>: key used to l10n the <code>menu entries</code> declared by the Third party in the bundle;</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>card data</code>: values of <code>card title</code> and <code>card summary</code> refer to <code>i18n keys</code> as well as <code>key attribute</code> in the <code>card detail</code> section of the card data.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>example</strong></p>
+</div>
+<div class="paragraph">
+<p>So in this example the third service is named <code>Bundle Test</code> with <code>BUNDLE_TEST</code> technical name. The bundle provide an english and a french l10n.</p>
+</div>
+<div class="paragraph">
+<p>The example bundle defined an new menu entry given access to 3 entries. The title and the summary have to be l10n, so needs to be the 2 tabs titles.</p>
+</div>
+<div class="paragraph">
+<p>The name of the third service as displayed in the main menu bar of OperatorFabric. It will have the key <code>"third-name-in-menu-bar"</code>. The english l10n will be <code>Bundle Test</code> and the french one will be <code>Bundle de test</code>.</p>
+</div>
+<div class="paragraph">
+<p>A name for the three entries in the third entry menu. Their keys will be in order <code>"first-menu-entry"</code>, <code>"b-menu-entry"</code> and <code>"the-other-menu-entry"</code> for an english l10n as <code>Entry One</code>, <code>Entry Two</code> and <code>Entry Three</code> and in french as <code>Entrée une</code>, <code>Entrée deux</code> and <code>Entrée trois</code>.</p>
+</div>
+<div class="paragraph">
+<p>The title for the card and its summary. As the card used here are generated by the script of the <code>cards-publication</code> project we have to used the key declared there. So they are respectively <code>process.title</code> and <code>process.summary</code> with the following l10ns for english: <code>Card Title</code> and <code>Card short description</code>, and for french l10ns: <code>Titre de la carte</code> and <code>Courte description de la carte</code>.</p>
+</div>
+<div class="paragraph">
+<p>A title for each (two of them) tab of the detail cards. As for card title and card summary, those keys are already defined by the test script. There are <code>"process.detail.tab.first"</code> and <code>"process.detail.tab.second"</code>. For english l10n, the values are <code>First Detail List</code> and <code>Second Detail List</code> and for the french l10n, the values are <code>Première liste de détails</code> and <code>Seconde liste de détails</code>.</p>
+</div>
+<div class="paragraph">
+<p>Here is the content of <code>en.json</code></p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{
+	"third-name-in-menu-bar":"Bundle Test",
+		"first-menu-entry":"Entry One",
+		"b-menu-entry":"Entry Two",
+		"the-other-menu-entry":"Entry Three",
+		"process":{
+			"title":"Card Title",
+			"summary":"Card short description",
+			"detail":{
+				"tab":{
+					"first":"First Detail List",
+					"second":"Second Detail List"
+				}
+			}
+		}
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here the content of <code>fr.json</code></p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{
+	"third-name-in-menu-bar":"Bundle de test",
+		"first-menu-entry":"Entrée une",
+		"b-menu-entry":"Entrée deux",
+		"the-other-menu-entry":"Entrée trois",
+		"process":{
+			"title":"Titre de la carte",
+			"summary":"Courte description de la carte",
+			"detail":{
+				"tab":{
+					"first":"Première liste de détails",
+					"second":"Deuxième liste de détails"
+				}
+			}
+		}
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once the bundle is correctly uploaded, the way to verify if the i18n have been correctly uploaded is to use the GET method of third api for i18n file.</p>
+</div>
+<div class="paragraph">
+<p>The service is described <a href="../api/<mark>getI18n">here</a> and can be used directly in the browser using the <a href="http://localhost:2100/swagger-ui.html</mark>/thirds/getI18n">Swagger UI - Third get i18n</a>. The <code>locale</code> language, the <code>version</code> of the bundle and the <code>technical name</code> of the third party are needed to get json in the response.</p>
+</div>
+<div class="paragraph">
+<p>To verify if the french l10n data of the version 1 of the BUNDLE_TEST third party we could use the following command line <code>curl -X GET "http://localhost:2100/thirds/BUNDLE_TEST/i18n?locale=fr&amp;version=1" -H  "accept: application/json"</code>.
+The service response with a 200 status and with the json corresponding to the defined fr.json file show below.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{
+"third-name-in-menu-bar":"Bundle de test",
+"first-menu-entry":"Entrée une",
+"b-menu-entry":"Entrée deux",
+"the-other-menu-entry":"Entrée trois",
+"tests":{
+	"title":"Titre de la carte",
+	"summary":"Courte description de la carte",
+	"detail":{
+		"tab":{
+			"first":"Première liste de détails",
+			"second":"Deuxième liste de détails"
+			}
+		}
+}
+}</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="MenuEntries">Menu Entries</h6>
+<div class="paragraph">
+<p>Those elements are declared  in the <code>config.json</code> file of the bundle.</p>
+</div>
+<div class="paragraph">
+<p>If there are several items to declare for a third service, a title for the third menu section need to be declared within the <code>i18nLabelKey</code> attribute, otherwise the first and only <code>menu entry</code> item is used to create an entry in the menu nav bar of OperatorFabric.</p>
+</div>
+<div class="sect6">
+<h7 id="_config_json_declaration">config.json declaration</h7>
+<div class="paragraph">
+<p>This kind of objects contains the following attributes :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>id</code>: identifier of the entry menu in the UI;</p>
+</li>
+<li>
+<p><code>url</code>: url opening a new page in a tab in the browser;</p>
+</li>
+<li>
+<p><code>label</code>: it&#8217;s an i18n key used to l10n the entry in the UI.</p>
+</li>
+</ul>
+</div>
+<div class="sect7">
+<h8 id="_examples">Examples</h8>
+<div class="paragraph">
+<p>In the following examples, only the part relative to menu entries in the <code>config.json</code> file is detailed, the other parts are omitted and represented with a '…'.</p>
+</div>
+<div class="paragraph">
+<p><strong>Single menu entry</strong></p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{
+	…
+	"menuEntries":[{
+			"id": "identifer-single-menu-entry",
+			"url": "https://opfab.github.io",
+			"label": "single-menu-entry-i18n-key"
+		}],
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Several menu entries</strong></p>
+</div>
+<div class="paragraph">
+<p>Here a sample with 3 menu entries.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{
+	…
+	"i18nLabelKey":"third-name-in-menu-navbar",
+	"menuEntries": [{
+			"id": "firstEntryIdentifier",
+			"url": "https://opfab.github.io/whatisopfab/",
+			"label": "first-menu-entry"
+		},
+		{
+			"id": "secondEntryIdentifier",
+			"url": "https://www.lfenergy.org/",
+			"label": "second-menu-entry"
+		} ,
+		{
+			"id": "thirdEntryIdentifier",
+			"url": "https://opfab.github.io",
+			"label": "third-menu-entry"
+		}]
+}</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_processes_and_states">Processes and States</h6>
+<div class="paragraph">
+<p>Processes and their states allows to match a Third Party service process specific state to a list of templates for card details and
+actions allowing specific card rendering for each state of the business process.</p>
+</div>
+<div class="paragraph">
+<p>The purpose of this section is to display elements of third card data in a custom format.</p>
+</div>
+<div class="paragraph">
+<p>Regarding the card detail customization, all the examples in this section will be based on the cards generated by the script existing in the <code>Cards-Publication</code> project. For the examples given here, this script is run with arguments detailed in the following command line:</p>
+</div>
+<div id="CardSendingScript" class="literalblock">
+<div class="content">
+<pre>$OPERATOR_FABRIC_HOME/services/core/cards-publication/src/main/bin/push_card_loop.sh --publisher BUNDLE_TEST --process tests</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>where:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>$OPERATOR_FABRIC_HOME</code> is the root folder of OperatorFabric where tests are performed;</p>
+</li>
+<li>
+<p><code>BUNDLE_TEST</code> is the name of the Third party;</p>
+</li>
+<li>
+<p><code>tests</code> is the name of the process referred by published cards.</p>
+</li>
+</ul>
+</div>
+<div class="sect6">
+<h7 id="_configuration">configuration</h7>
+<div class="paragraph">
+<p>The process entry in the configuration file is a dictionary of processes, each key maps to a process definition.
+A process definition is itself a dictionary of states, each key maps to a state definition. A state is defined by:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>a list of details: details are a combination of an internationalized title (title), css class styling element
+(titleStyle) and a template reference</p>
+</li>
+<li>
+<p>a dictionary of actions: actions are described in the bellow <a href="#ActionsThirdsDescription">Actions</a> section.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect6">
+<h7 id="ActionsThirdsDescription">Actions</h7>
+<div class="literalblock">
+<div class="content">
+<pre>{
+  "type" : "URL",
+  "url": "http://somewher.org/simpleProcess/finish",
+  "lockAction" : true,
+  "called" : false,
+  "updateStateBeforeAction" : false,
+  "hidden" : true,
+  "buttonStyle" : "buttonClass",
+  "label" : {
+    "key" : "my.card.my.action.label"
+  }
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>An action aggregates both the mean to trigger action on the third party and data for an action button rendering:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>type - mandatory: for now only URL type is supported:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>URL: this action triggers a call to an external REST end point</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>url - mandatory: a template url for URL type action. this url may be injected with data before actions call, data are
+specified using curly brackets. Available parameters:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>processInstance: the name/id of the process instance</p>
+</li>
+<li>
+<p>process: the name of the process</p>
+</li>
+<li>
+<p>state: the state name of the process</p>
+</li>
+<li>
+<p>jwt: the jwt token of the user</p>
+</li>
+<li>
+<p>data.[path]: a path to object in card data structure</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>hidden: if true, action won&#8217;t be visible on the card but will be available to templates</p>
+</li>
+<li>
+<p>buttonStyle: css style classes to apply to the action button</p>
+</li>
+<li>
+<p>label: an i18n key and parameters used to display a tooltip over the button</p>
+</li>
+<li>
+<p>lockAction: not yet implemented</p>
+</li>
+<li>
+<p>updateStateBeforeAction: not yet implemented</p>
+</li>
+<li>
+<p>called: not yet implemented</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For in depth information on the behavior needed for the third party rest endpoints refer to the Actions service reference.</p>
+</div>
+</div>
+<div class="sect6">
+<h7 id="_templates">Templates</h7>
+<div class="paragraph">
+<p>For demonstration purposes, there will be two simple templates. For more advance feature go to the section detailing the handlebars templates in general and helpers available in OperatorFabric.
+As the card used in this example are created <a href="#CardSendingScript">above</a>, the bundle template folder needs to contain 2 templates: <code>template1.handlebars</code> and <code>template2.handlebars</code>.</p>
+</div>
+<div class="paragraph">
+<p>examples of template (i18n versions)</p>
+</div>
+<div class="paragraph">
+<p><code>/template/en/template1.handlers</code></p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;h2&gt;Template Number One&lt;/h2&gt;
+&lt;div class="bundle-test"&gt;'{{card.data.level1.level1Prop}}'&lt;/div&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>/template/fr/template1.handlers</code></p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;h2&gt;Patron numéro Un&lt;/h2&gt;
+&lt;div class="bundle-test"&gt;'{{card.data.level1.level1Prop}}'&lt;/div&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Those templates display a l10n title and an line containing the value of the scope property <code>card.level1.level1Prop</code> which is <code>This is a root property</code>.</p>
+</div>
+<div class="paragraph">
+<p><code>/template/en/template2.handelbars</code></p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;h2&gt;Second Template&lt;/h2&gt;
+&lt;ul class="bundle-test-list"&gt;
+	{{#each card.data.level1.level1Array}}
+		&lt;li class="bunle-test-list-item"&gt;{{this.level1ArrayProp}}&lt;/li&gt;
+	{{/each}}
+&lt;/ul&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>/template/fr/template2.handelbars</code></p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;h2&gt;Second patron&lt;/h2&gt;
+&lt;ul class="bundle-test-list"&gt;
+	{{#each card.data.level1.level1Array}}
+		&lt;li class="bunle-test-list-item"&gt;{{this.level1ArrayProp}}&lt;/li&gt;
+	{{/each}}
+&lt;/ul&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Those templates display also a l10n title and a list of numeric values from 1 to 3.</p>
+</div>
+</div>
+<div class="sect6">
+<h7 id="_css">CSS</h7>
+<div class="paragraph">
+<p>This folder contains regular css files.
+The file name must be declared in the <code>config.json</code> file in order to be used in the templates and applied to them.</p>
+</div>
+<div class="sect7">
+<h8 id="_examples_2">Examples</h8>
+<div class="paragraph">
+<p>As above, all parts of files irrelevant for our example are symbolised by a <code>…</code> character.</p>
+</div>
+<div class="paragraph">
+<p><strong>Declaration of css files in <code>config.json</code> file</strong></p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{
+	…
+	"csses":["bundleTest"]
+	…
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>CSS Class used in <code>./template/en/template1.handlebars</code></strong></p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>	…
+	&lt;div class="bundle-test"&gt;'{{card.data.level1.level1Prop}}'&lt;/div&gt;
+	…</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As seen above, the value of <code>{{card.data.level1.level1Prop}}</code> of a test card is <code>This is a level1 property</code></p>
+</div>
+<div class="paragraph">
+<p><strong>Style declaration in <code>./css/bundleTest.css</code></strong></p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>.h2{
+	color:#fd9312;
+	font-weight: bold;
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Expected result</strong></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/images/expected-result.png" alt="Formatted root property">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_upload">Upload</h6>
+<div class="paragraph">
+<p>For this, the bundle is submitted to the OperatorFabric server using a POST http method as describe in <a href="../api/index.html#uploadBundle">the Third Service API documentation</a>.
+It&#8217;s possible for test purposes to use the swagger documentation of the OperatorFabric using the following url <code>https//:$OPERATOR_FABRIC_ROOT_URL:2100/swagger-ui.html#/thirds/uploadBundle</code></p>
+</div>
+<div class="paragraph">
+<p> where <code>$OPERATOR_FABRIC_ROOT_URL</code> is the url of the running OperatorFabric tested.</p>
+</div>
+<div class="paragraph">
+<p>Example :</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>cd $BUNDLE_FOLDER
+curl -X POST "http://localhost:2100/thirds" -H  "accept: application/json" -H  "Content-Type: multipart/form-data" -F "file=@bundle-test.tar.gz;type=application/gzip"</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Where:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>$BUNDLE_FOLDER</code> is the folder containing the bundle archive to be uploaded.</p>
+</li>
+<li>
+<p><code>bundle-test.tar.gz</code> is the name of the uploaded bundle.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>These command line should return a <code>200 http status</code> response with the details of the content of the bundle in the response body such as :</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{
+  "mediasData": null,
+  "menuEntriesData": [
+    {
+      "id": "uid test 0",
+      "url": "https://opfab.github.io/whatisopfab/",
+      "label": "first-menu-entry"
+    },
+    {
+      "id": "uid test 0",
+      "url": "https://www.lfenergy.org/",
+      "label": "b-menu-entry"
+    },
+    {
+      "id": "uid test 1",
+      "url": "https://github.com/opfab/opfab.github.io",
+      "label": "the-other-menu-entry"
+    }
+  ],
+  "name": "BUNDLE_TEST",
+  "version": "1",
+  "csses": [
+    "bundleTest"
+  ],
+  "i18nLabelKey": "third-name-in-menu-bar",
+  "medias": null,
+  "menuEntries": [
+    {
+      "id": "uid test 0",
+      "url": "https://opfab.github.io/whatisopfab/",
+      "label": "first-menu-entry"
+    },
+    {
+      "id": "uid test 0",
+      "url": "https://www.lfenergy.org/",
+      "label": "b-menu-entry"
+    },
+    {
+      "id": "uid test 1",
+      "url": "https://github.com/opfab/opfab.github.io",
+      "label": "the-other-menu-entry"
+    }
+  ],
+  "processes" : {
+        "simpleProcess" : {
+          "start" : {
+            "details" : [ {
+              "title" : {
+                "key" : "start.first.title"
+              },
+              "titleStyle" : "startTitle text-danger",
+              "templateName" : "template1"
+            } ],
+            "actions" : {
+              "finish" : {
+                "type" : "URL",
+                "url": "http://somewher.org/simpleProcess/finish",
+                "lockAction" : true,
+                "called" : false,
+                "updateStateBeforeAction" : false,
+                "hidden" : true,
+                "buttonStyle" : "buttonClass",
+                "label" : {
+                  "key" : "my.card.my.action.label"
+                },
+              }
+            }
+          },
+          "end" : {
+            "details" : [ {
+              "title" : {
+                "key" : "end.first.title"
+              },
+              "titleStyle" : "startTitle text-info",
+              "templateName" : "template2",
+              "styles" : [ "bundleTest.css" ]
+            } ]
+          }
+        }
+      }
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Otherwise please refer to the <a href="#TroubleShooting">trouble shooting</a> section to resolve the problem.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_bundle_technical_overview">4.2. Bundle Technical overview</h3>
+<div class="paragraph">
+<p>See <a href="../api/#__Models">the model section of the swagger generated
+documentation</a> for data layout</p>
+</div>
+<div class="sect3">
+<h4 id="resource-serving">4.2.1. Resource serving</h4>
+<div class="sect4">
+<h5 id="css">CSS</h5>
+<div class="paragraph">
+<p>CSS 3 style sheet are supported, they allow custom styling of card template
+detail all css selector must be prefixed by the <code>.detail.template</code> parent
+selector</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="internationalization">Internationalization</h5>
+<div class="paragraph">
+<p>Internationalization (i18n) files are json file (JavaScript Object Notation).
+One file must be defined by module supported language. See
+<a href="../api/#__Models">the model section of the swagger
+generated documentation</a> for data layout.</p>
+</div>
+<div class="paragraph">
+<p>Sample json i18n file</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{ "emergency":
+  {
+    "message": "Emergency situation happened on {{date}}. Cause : {{cause}}."
+    "module":
+      {
+        "name": "Emergency Module",
+        "description": "The emergency module managed ermergencies"
+      }
+  }
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>i18n messages may include parameters, these parameters are framed with double
+curly braces.</p>
+</div>
+<div class="paragraph">
+<p>The bundled json files name must conform to the following pattern : [lang].json</p>
+</div>
+<div class="paragraph">
+<p>ex:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>fr.json
+en.json
+de.json</pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="media-notification-sounds">Media (notification sounds)</h5>
+<div class="paragraph">
+<p>Supported media files type : * ogg * wav * mp3</p>
+</div>
+<div class="paragraph">
+<p>Due to web nature of OperatorFabric, we encourage business modules provider to
+favor the lightest file formats (ogg,mp3, &#8230;&#8203;)</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="templates">Templates</h5>
+<div class="paragraph">
+<p>Templates are <a href="https://handlebarsjs.com/">Handlebars</a> template files. Templates
+are fuelled with a scope structure composed of</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>a <strong>card</strong> property (See <a href="../api/#__Models">card data model</a> for more information)</p>
+</li>
+<li>
+<p>a <strong>userContext</strong> :</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>login</strong>: user login</p>
+</li>
+<li>
+<p><strong>token</strong>: user jwt token</p>
+</li>
+<li>
+<p><strong>firstName</strong>: user first name</p>
+</li>
+<li>
+<p><strong>lastName</strong>: user last name</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In addition to Handlebars basic syntax and helpers, OperatorFabric defines the
+following helpers :</p>
+</div>
+<div class="sect5">
+<h6 id="numberformat">numberFormat</h6>
+<div class="paragraph">
+<p>formats a number parameter using
+<a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Nu" class="bare">developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Nu</a>
+mberFormat[Intl.NumberFormat].
+The locale used is the current user selected one, and options are passed as hash
+parameters (<a href="https://handlebarsjs.com/">see Handlebars doc Literals section</a>).</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{{numberFormat card.data.price style="currency" currency="EUR"}}</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="dateformat">dateFormat</h6>
+<div class="paragraph">
+<p>formats the submitted parameters (millisecond since epoch) using
+<a href="https://momentjs.com/">mement.format</a>. The locale used is the current user
+selected one, the format is "format" hash parameter
+(<a href="https://handlebarsjs.com/">see Handlebars doc Literals section</a>).</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{{dateFormat card.data.birthday format="MMMM Do YYYY, h:mm:ss a"}}</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="slice">slice</h6>
+<div class="paragraph">
+<p>extracts a sub array from ann array</p>
+</div>
+<div class="paragraph">
+<p>example:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;!--
+{"array": ["foo","bar","baz"]}
+--&gt;
+&lt;ul&gt;
+{{#each (slice array 0 2)}}
+  &lt;li&gt;{{this}}&lt;/li&gt;
+{{/each}}
+&lt;/ul&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>outputs:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;ul&gt;
+  &lt;li&gt;foo&lt;/li&gt;
+  &lt;li&gt;bar&lt;/li&gt;
+&lt;/ul&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;!--
+{"array": ["foo","bar","baz"]}
+--&gt;
+&lt;ul&gt;
+{{#each (slice array 1)}}
+  &lt;li&gt;{{this}}&lt;/li&gt;
+{{/each}}
+&lt;/ul&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>outputs:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;ul&gt;
+  &lt;li&gt;bar&lt;/li&gt;
+  &lt;li&gt;baz&lt;/li&gt;
+&lt;/ul&gt;</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="now">now</h6>
+<div class="paragraph">
+<p>outputs the current date in millisecond from epoch. The date is computed from
+application internal time service and thus may be different from the date that
+one can compute from javascript api which relies on the browsers' system time.</p>
+</div>
+<div class="paragraph">
+<p>NB: Due to Handlebars limitation you must provide at least one argument to
+helpers otherwise, Handlebars will confuse a helper and a variable. In the
+bellow example, we simply pass an empty string.</p>
+</div>
+<div class="paragraph">
+<p>example:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;div&gt;{{now ""}}&lt;/div&gt;
+&lt;br&gt;
+&lt;div&gt;{{dateFormat (now "") format="MMMM Do YYYY, h:mm:ss a"}}&lt;/div&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>outputs</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;div&gt;1551454795179&lt;/div&gt;
+&lt;br&gt;
+&lt;div&gt;mars 1er 2019, 4:39:55 pm&lt;/div&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>for a local set to <code>FR_fr</code></p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="preservespace">preserveSpace</h6>
+<div class="paragraph">
+<p>preserves space in parameter string to avoid html standard space trimming.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{{preserveSpace card.data.businessId}}</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="bool">bool</h6>
+<div class="paragraph">
+<p>returns a boolean result value on an arithmetical operation (including object
+equality) or boolean operation.</p>
+</div>
+<div class="paragraph">
+<p>Arguments: - v1: left value operand - op: operator (string value) - v2: right
+value operand</p>
+</div>
+<div class="paragraph">
+<p>arithmetical operators:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>==</p>
+</li>
+<li>
+<p>===</p>
+</li>
+<li>
+<p>!=</p>
+</li>
+<li>
+<p>!==</p>
+</li>
+<li>
+<p>&lt;</p>
+</li>
+<li>
+<p>&#8656;</p>
+</li>
+<li>
+<p>&gt;</p>
+</li>
+<li>
+<p>&gt;=</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>boolean operators:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>&amp;&amp;</p>
+</li>
+<li>
+<p>||</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>examples:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{{#if (bool v1 '&lt;' v2)}}
+  v1 is strictly lower than v2
+{{else}}
+ V2 is lower or equal to v1
+{{/if}}</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="math">math</h6>
+<div class="paragraph">
+<p>returns the result of a mathematical operation.</p>
+</div>
+<div class="paragraph">
+<p>arguments:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>v1: left value operand</p>
+</li>
+<li>
+<p>op: operator (string value)</p>
+</li>
+<li>
+<p>v2: right value operand</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>arithmetical operators:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>+</p>
+</li>
+<li>
+<p>-</p>
+</li>
+<li>
+<p>*</p>
+</li>
+<li>
+<p>/</p>
+</li>
+<li>
+<p>%</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>example:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{{math 1 '+' 2}}</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="split">split</h6>
+<div class="paragraph">
+<p>splits a string into an array based on a split string.</p>
+</div>
+<div class="paragraph">
+<p>example:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;ul&gt;
+{{#each (split 'my.example.string' '.')}}
+  &lt;li&gt;{{this}}&lt;/li&gt;
+{{/each}}
+&lt;/ul&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>outputs</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;ul&gt;
+  &lt;li&gt;my&lt;/li&gt;
+  &lt;li&gt;example&lt;/li&gt;
+  &lt;li&gt;string&lt;/li&gt;
+&lt;/ul&gt;</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="cardaction">action</h6>
+<div class="paragraph">
+<p>outputs a card action button whose card action id is the concatenation of an
+arbitrary number of helper arguments</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{{{action "PREREQUISITE_" id}}}</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="svg">svg</h6>
+<div class="paragraph">
+<p>outputs a svg tag with lazy loading, and missing image replacement message. The
+image url is the concatenation of an arbitrary number of helper arguments</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{{{svg baseUri scheduledOpId "/" substation "/before/"
+computationPhaseOrdinal}}}</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="i18n">i18n</h6>
+<div class="paragraph">
+<p>outputs a i18n result from a key and some parameters. There are two ways of
+configuration :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Pass an object as sole argument. The object must contain a key field (string)
+and an optional parameter field (map of parameterKey &#8658; value)</p>
+<div class="literalblock">
+<div class="content">
+<pre>{{i18n card.data.i18nTitle}}</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Pass a string key as sole argument and use hash parameters
+(<a href="https://handlebarsjs.com/">see Handlebars doc Literals section</a>) for i18n string
+parameters.</p>
+</li>
+</ul>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;!--
+emergency.title=Emergency situation happened on {{date}}. Cause : {{cause}}.
+--&gt;
+{{i18n "emergency.title" date="2018-06-14" cause="Broken Cofee Machine"}}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>outputs</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Emergency situation happened on 2018-06-14. Cause : Broken Cofee Machine</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="sort">sort</h6>
+<div class="paragraph">
+<p>sorts an array or some object&#8217;s properties (first argument) using an optional
+field name (second argument) to sort the collection on this fields natural
+order.</p>
+</div>
+<div class="paragraph">
+<p>If there is no field argument provided :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>for an array, the original order of the array is kept ;</p>
+</li>
+<li>
+<p>for an object, the structure is sorted by the object field name.</p>
+</li>
+</ul>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;!--
+users :
+
+{"john": { "firstName": "John", "lastName": "Cleese"},
+"graham": { "firstName": "Graham", "lastName": "Chapman"},
+"terry": { "firstName": "Terry", "lastName": "Gilliam"},
+"eric": { "firstName": "Eric", "lastName": "Idle"},
+"terry": { "firstName": "Terry", "lastName": "Jones"},
+"michael": { "firstName": "Michael", "lastName": "Palin"},
+--&gt;
+
+&lt;ul&gt;
+{{#each (sort users)}}
+    &lt;li&gt;{{this.firstName}} {{this.lastName}}&lt;/li&gt;
+{{/each}}
+&lt;/ul&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>outputs :</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;ul&gt;
+  &lt;li&gt;Eric Idle&lt;/li&gt;
+  &lt;li&gt;Graham Chapman&lt;/li&gt;
+  &lt;li&gt;John Cleese&lt;/li&gt;
+  &lt;li&gt;Michael Pallin&lt;/li&gt;
+  &lt;li&gt;Terry Gilliam&lt;/li&gt;
+  &lt;li&gt;Terry Jones&lt;/li&gt;
+&lt;/ul&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;ul&gt;
+{{#each (sort users "lastName")}}
+    &lt;li&gt;{{this.firstName}} {{this.lastName&lt;/li&gt;
+{{/each}}
+&lt;/ul&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>outputs :</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;ul&gt;
+  &lt;li&gt;Graham Chapman&lt;/li&gt;
+  &lt;li&gt;John Cleese&lt;/li&gt;
+  &lt;li&gt;Terry Gilliam&lt;/li&gt;
+  &lt;li&gt;Eric Idle&lt;/li&gt;
+  &lt;li&gt;Terry Jones&lt;/li&gt;
+  &lt;li&gt;Michael Pallin&lt;/li&gt;
+&lt;/ul&gt;</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_operatorfabric_users_service">5. OperatorFabric Users Service</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The User service manages users and groups.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Users</dt>
+<dd>
+<p>represent account information for person destined to receive cards in the OperatorFabric instance.</p>
+</dd>
+<dt class="hdlist1">Groups</dt>
+<dd>
+<div class="ulist">
+<ul>
+<li>
+<p>represent set of users destined to receive collectively some cards.</p>
+</li>
+<li>
+<p>can be used in a way to handle rights on card reception in OperatorFabric.</p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+The user define here is an internal representation of the individual card recipient in <code>OperatorFabric</code> the authentication is leave to specific OAuth2 external service.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+In the following commands the <code>$token</code> is an authentication token currently valid for the <code>OAuth2</code> service used by the current <code>OperatorFabric</code> system.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_users_and_groups">5.1. Users and Groups</h3>
+<div class="paragraph">
+<p>User service manager users and groups.</p>
+</div>
+<div class="sect3">
+<h4 id="_users">5.1.1. Users</h4>
+<div class="paragraph">
+<p>Users are the individuals and mainly physical person who can log in OperatorFabric.</p>
+</div>
+<div class="paragraph">
+<p>The access to this service has to be authorized, in the <code>OAuth2</code> service used by the current <code>OperatorFabric</code> instance, at least to access User information and to manage Users. The membership of groups is stored in the user information.</p>
+</div>
+<div class="sect4">
+<h5 id="_automation_creation_users">Automation creation users</h5>
+<div class="paragraph">
+<p>In case of an user does exist in a provided authentication service but he does not exist in the <code>OperatorFabric</code> instance, when he is authenticated and connected
+for the first time in the <code>OperatorFabric</code> instance, the user is automatically created in the system with no attached groups.
+The administration of the groups is dealt by the administrator manually. More details about automation creation user
+<a href="../user_guide/index.html#_operator_fabric_specific_configuration">[here]</a></p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_groups">5.1.2. Groups</h4>
+<div class="paragraph">
+<p>The notion of group is loose and can be used to simulate role in <code>OperatorFabric</code>. Groups are used to send cards to several users without name them specifically. The information about membership to a group is stored in the user information. The rules used to send cards are describe in the <a href="https://opfab.github.io/projects/services/core/cards-publication/1.0.0.RELEASE/reference/#_card_recipients">Card Publication Service</a>.</p>
+</div>
+<div class="sect4">
+<h5 id="_alternative_way_to_manage_groups">Alternative way to manage groups</h5>
+<div class="paragraph">
+<p>The standard way to handle groups in <code>OperatorFabric</code> instance is dealt on the user information.
+There is an alternative way to manage groups through the authentication token, the groups are defined by the administrator of the authentication service.
+<a href="../user_guide/index.html#_operator_fabric_specific_configuration">[here]</a>  for more details to use this feature.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_cards_publication_service">6. Cards Publication Service</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Cards Publication Service exposes a REST API through which third-party applications, or "publishers" can post cards
+to OperatorFabric. It then handles those cards:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Time-stamping them with a "publishDate"</p>
+</li>
+<li>
+<p>Sending them to the message broker (RabbitMQ) to be delivered in real time to the appropriate operators</p>
+</li>
+<li>
+<p>Persisting them to the database (MongoDB) for later consultation</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_card_structure">6.1. Card Structure</h3>
+<div class="paragraph">
+<p>Cards are modelized as <code>Json</code> objects. The technical design of card is describe in <a href="../api/#Card">the swagger api description of Card Publication Service</a>. A card correspond to the state of a Process in OperatorFabric.</p>
+</div>
+<div class="sect3">
+<h4 id="_technical_information_of_the_card">6.1.1. Technical Information of the card</h4>
+<div class="paragraph">
+<p>Those attributes are used by OperatorFabric to manage how cards are stored, to whom and when they&#8217;re sent.</p>
+</div>
+<div class="sect4">
+<h5 id="_mandatory_information">Mandatory information</h5>
+<div class="paragraph">
+<p>Below, the <code>json</code> technical key is in the '()' following the title.</p>
+</div>
+<div class="sect5">
+<h6 id="_card_publisher">Publisher (<code>publisher</code>)</h6>
+<div class="paragraph">
+<p>Quite obviously it&#8217;s the Third party which publish the card. This information is used to look up for Presentation resources of the card.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_card_publisher_version">Publisher Version (<code>publisherVersion</code>)</h6>
+<div class="paragraph">
+<p>Refers the <code>version</code> of <code>publisher third</code> to use to render this card (i18n, title, summary, media and details).
+As through time, the presentation of a publisher card data changes, this changes are managed through <code>publisherVersion</code> in OperatorFabric. Each version is keep in the system in order to be able to display correctly old cards.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_process_identifier_processid">Process Identifier (<code>processId</code>)</h6>
+<div class="paragraph">
+<p>It&#8217;s the way to identify the process to which the card is associated. A card represent a state of a process.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="startDate">Start Date (<code>startDate</code>)</h6>
+<div class="paragraph">
+<p>This attribute is a part of the card life management system. It&#8217;s indicate OperatorFabric the moment since the card can be displayed to the operators or main recipients, <a href="#_displaying_rules">see Displaying rules</a>.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_severity_severity">Severity (<code>severity</code>)</h6>
+<div class="paragraph">
+<p>The severity is a core principe of the OperatorFabric Card system. There are 4 severities available(<a href="../api/#SeverityEnum">Technical definition of OperatorFabric Card Severity</a>). A color is associated in the GUI to each severity. Here the details about severity and their meaning for OperatorFabric:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>ALARM: represents a critical state of the associated process, need an action from the operator. In the Gui, the card is red;</p>
+</li>
+<li>
+<p>ACTION: the associated process need an action form operators in order to evolve correctly. In the Gui, an action is orange;</p>
+</li>
+<li>
+<p>COMPLIANT: the process related to the card is in a compliant status. In the UI, an action is green.;</p>
+</li>
+<li>
+<p>INFORMATION: give information to the operator. In the GUI, a information is blue.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect5">
+<h6 id="cardTitle">Title (<code>title</code>)</h6>
+<div class="paragraph">
+<p>This attribute is display as header of a card in the feed of the GUI. It&#8217;s the main User destined Information of a card. The value refer to an <code>i18n</code> value used to localized this information.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="cardSummary">Summary (<code>summary</code>)</h6>
+<div class="paragraph">
+<p>This attribute is display as a description of a card in the feed of the GUI, when the card is selected by the operator. It&#8217;s completing the information of the card title. The value refer to an <code>i18n</code> value used to localized this information.</p>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_recipient_recipient">Recipient (<code>recipient</code>)</h5>
+<div class="paragraph">
+<p>Declares to whom the card is send. For more details about way recipient works <a href="#_displaying_rules">see Displaying rules</a>. Without recipient declaration a card is useless in <code>OperatorFabric</code> system.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_store_information">Store information</h5>
+<div class="sect5">
+<h6 id="_tags_tag">Tags (<code>tag</code>)</h6>
+<div class="paragraph">
+<p>Tags are intended to enable filter of cards in the feed of the GUI.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_uid_uid">uid (<code>uid</code>)</h6>
+<div class="paragraph">
+<p>Unique identifier of the card in the OperatorFabric system. This attribute can be send with card, but normally it&#8217;s manage by <code>OperatorFabric</code> system.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_id_id">id (<code>id</code>)</h6>
+<div class="paragraph">
+<p>State id of the associated process, determined by <code>OperatorFabric</code> can be set arbitrarily by the <code>publisher</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_card_life_management_configuration">Card Life Management Configuration</h5>
+<div class="paragraph">
+<p>With this attributes OperatorFabric know when to display or hide cards, but also if an action is still available for a given card.</p>
+</div>
+<div class="sect5">
+<h6 id="_start_date_startdate">Start Date (<code>startDate</code>)</h6>
+<div class="paragraph">
+<p><a href="#startDate">see Start Date in Technical Information of the Card</a> and <a href="#_displaying_rules">for more examples</a>.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_end_date_enddate">End Date (<code>endDate</code>)</h6>
+<div class="paragraph">
+<p>Fixes the moment until when <code>OperatorFabric</code> displays the card. After the card is remove from the GUI feed, <a href="#_display_rules">see Display Rules for some examples</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_last_time_to_decide_lttd">Last Time to Decide (<code>lttd</code>)</h5>
+<div class="paragraph">
+<p>Fixes the moment until when a <code>actions</code> associated to the card are available. After then, the associated actions won&#8217;t be displayed or actionable.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_other_technical_attributes">Other technical attributes</h5>
+
+</div>
+<div class="sect4">
+<h5 id="_publish_date_publishdate">Publish Date (<code>publishDate</code>)</h5>
+<div class="paragraph">
+<p>Indicates when the card has been registered in <code>OperatorFabric</code> system. This is a technical information exclusively managed by <code>OperatorFabric</code>.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_deletion_date_deletiondate">Deletion Date (`deletionDate°)</h5>
+<div class="paragraph">
+<p>Indicates when the card has been removes from <code>OperatorFabric</code> system. Technical information manage by <code>OperatorFabric</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_user_destined_information_of_the_card">6.1.2. User destined Information of the card</h4>
+<div class="paragraph">
+<p>There are two kind of User destined information in a card. Some are restricted to the card format, others are defined by the publisher as long as there are encoded in <code>json</code> format.</p>
+</div>
+<div class="sect4">
+<h5 id="_in_card_format">in Card Format</h5>
+<div class="sect5">
+<h6 id="_title_title">Title (<code>title</code>)</h6>
+<div class="paragraph">
+<p><a href="#cardTitle">see Title in Technical Information of the Card</a></p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_summary_summary">Summary (<code>summary</code>)</h6>
+<div class="paragraph">
+<p><a href="#cardSummary">see Summary in Technical Information of the Card</a></p>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_custom_part">Custom part</h5>
+<div class="sect5">
+<h6 id="_data_data">Data (<code>data</code>)</h6>
+<div class="paragraph">
+<p>Determines where custom information is store. The content in this attribute, is purely <code>publisher</code> choice. This content, as long as it&#8217;s in <code>json</code> format can be used to display details. For the way the details are displayed <a href="#_presentation_information_of_the_card">see below</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_presentation_information_of_the_card">6.1.3. Presentation Information of the card</h4>
+<div class="sect4">
+<h5 id="_media_media">Media (<code>media</code>)</h5>
+<div class="paragraph">
+<p>Some cards can emit a sound when displayed in the feed of the GUI, the id of audio notification is indicated in this attribute.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_details_details">details (<code>details</code>)</h5>
+<div class="paragraph">
+<p>This attribute is a string of objects containing a <code>title</code> attribute which is <code>i18n</code> key and a <code>template</code> attribute which refers to a template name contained in the publisher bundle. The bundle in which those resources will be looked for is the one corresponding of the <a href="#_card_publisher_version">version</a> declared in the card for the current <a href="#_card_publisher">publisher</a>. If no resource is found, either because there is no bundle for the given version or there is no resource for the given key, then the corresponding key is displayed in the details section of the GUI.</p>
+</div>
+<div class="paragraph">
+<p><a href="../../../thirds/1.0.0.RELEASE/reference/#_bundle">See the documentation about third bundle in the Third service documentation</a>.</p>
+</div>
+<div class="paragraph">
+<p><strong>example:</strong></p>
+</div>
+<div class="paragraph">
+<p>The <code>TEST</code> publisher has only a <code>0.1</code> version uploaded in the current <code>OperatorFabric</code> system. The <code>details</code> value is <code>[{"title":{"key":"first.tab.title"},"template":"template0"}]</code>.</p>
+</div>
+<div class="paragraph">
+<p>If the <code>publisherVersion</code> of the card is <code>2</code> then only the <code>title</code> key declared in the <code>details</code> array will be displays without any translation, i.e. the tab will contains <code>TEST.2.first.tab.title</code> and will be empty. If the <code>l10n</code> for the title is not available, then the tab title will be still <code>TEST.2.first.tab.title</code> but the template will be compute and the details section will display the template content.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_timespans_timespans">TimeSpans (<code>timeSpans</code>)</h5>
+<div class="paragraph">
+<p>When the simple startDate and endDate are not enough to characterize your
+process business times, you can add a list of TimeSpan to your card. TimeSpans
+are rendered in the timeline component as cluster bubbles are as lines
+depending on your parametrization of the span. This as no effect on the feed
+content</p>
+</div>
+<div class="paragraph">
+<p><strong>example 1:</strong></p>
+</div>
+<div class="paragraph">
+<p>to display the card two times in the timeline you can add two TimeSpan to your
+card:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{
+	"publisher":"TSO1",
+	"publisherVersion":"0.1",
+	"processId":"process-000",
+	"startDate":1546297200000,
+	"severity":"INFORMATION",
+	...
+	"timeSpans" : [
+        {"start" : 1546297200000},
+        {"start" : 1546297500000}
+    ]
+
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this sample, the card will be displayed twice in the time line. The card
+start date will be ignored.</p>
+</div>
+<div class="paragraph">
+<p><strong>example 2:</strong></p>
+</div>
+<div class="paragraph">
+<p>Instead of the default clustered view, you may want your card to be displayed
+as a line in the time line.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{
+	"publisher":"TSO1",
+	"publisherVersion":"0.1",
+	"processId":"process-000",
+	"startDate":1546297200000,
+	"severity":"INFORMATION",
+	...
+	"timeSpans" : [
+        {"start" : 1546297200000, "end" : 1546297500000}
+    ]
+
+}</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_cards_examples">6.2. Cards Examples</h3>
+<div class="paragraph">
+<p>Before detailing the content of cards, let&#8217;s show you what cards look like through few examples of json.</p>
+</div>
+<div class="sect3">
+<h4 id="_minimal_card">6.2.1. Minimal Card</h4>
+<div class="paragraph">
+<p>The OperatorFabric Card specification defines 8 mandatory attributes, but some optional attributes are needed for cards to be useful in OperatorFabric. Let&#8217;s clarify those point through few examples of minimal cards and what happens when they&#8217;re used as if.</p>
+</div>
+<div class="sect4">
+<h5 id="_send_to_one_user">Send to One User</h5>
+<div class="paragraph">
+<p>The following card contains only the mandatory attributes.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{
+	"publisher":"TSO1",
+	"publisherVersion":"0.1",
+	"processId":"process-000",
+	"startDate":1546297200000,
+	"severity":"INFORMATION",
+	"title":{"key":"card.title.key"},
+	"summary":{"key":"card.summary.key"},
+	"recipient":{
+		"type":"USER",
+		"identity":"tso1-operator"
+	}
+
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This an information about the process <code>process-000</code>, send by the <code>TSO1</code>. The title and the summary refers to <code>i18n</code> keys defined in the associated <code>i18n</code> files of the publisher. This card is displayable since the first january of 2019 and should only be received by the user using the <code>tso1-operator</code> login.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_send_to_several_users">Send to several users</h5>
+<div class="sect5">
+<h6 id="_simple_case">Simple case</h6>
+<div class="paragraph">
+<p>The following example is nearly the same as the previous one except for the recipient.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{
+	"publisher":"TSO1",
+	"publisherVersion":"0.1",
+	"processId":"process-000",
+	"startDate":1546297200000,
+	"severity":"INFORMATION",
+	"title":{"key":"card.title.key"},
+	"summary":{"key":"card.summary.key"},
+	"recipient":{
+		"type":"GROUP",
+		"identity":"TSO1"
+	}
+
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The recipient is here a group, the <code>TSO1</code>. So all users whoa are member of this group will receive the card.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_complex_case">Complex case</h6>
+<div class="paragraph">
+<p>If this card need to be view by a user who is not in the <code>TSO1</code> group, it&#8217;s possible to tune more precisely the definition of the recipient. If the <code>tso2-operator</code> needs to see also this card, the recipient definition could be(the following code details only the recipient part):</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>"recipient":{
+	"type":"UNION",
+	"recipients":[
+		{ "type": "GROUP", "identity":"TSO1"},
+		{ "type": "USER", "identity":"tso2-operator"}
+		]
+	}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So here, all the users of the <code>TSO1</code> group will received the <code>INFORMATION</code> as should the <code>tos2-operator</code> user.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_regular_card">6.2.2. Regular Card</h4>
+<div class="paragraph">
+<p>The previous cards were nearly empty regarding information carrying. In fact, cards are intended to contains more information than a title and a summary. The optional attribute <code>data</code> is here for that. This attribute is destined to contains any <code>json</code> object. The creator of the card is free to put any information needed as long as it&#8217;s in a <code>json</code> format.</p>
+</div>
+<div class="sect4">
+<h5 id="_full_of_hidden_data">Full of Hidden data</h5>
+<div class="paragraph">
+<p>For this example we will use our previous example for the <code>TSO1</code> group with a <code>data</code> attribute containing the definition of a <code>json</code> object containing two attributes: <code>stringExample</code> and <code>numberExample</code>.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{
+	"publisher":"TSO1",
+	"publisherVersion":"0.1",
+	"processId":"process-000",
+	"startDate":1546297200000,
+	"severity":"INFORMATION",
+	"title":{"key":"card.title.key"},
+	"summary":{"key":"card.summary.key"},
+	"recipient":{
+		"type":"USER",
+		"identity":"tso1-operator"
+	},
+	"data":{
+		"stringExample":"This is a not so random string of characters.",
+		"numberExample":123
+		}
+
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This card contains some data but when selected in the feed nothing more than the previous example of card happen because there is no rendering configuration.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_fully_useful">Fully useful</h5>
+<div class="paragraph">
+<p>When a card is selected in the feed (of the GUI), the data is displayed in the detail panel. The way details are formatted depends on template uploaded by Third parties as <a href="https://opfab.github.io/projects/services/core/thirds/1.0.0.RELEASE/reference/#_bundle">describe here</a>. To have an effective example without to many actions to performed, the following example will use an already existing configuration.The one presents in the development version of OperatorFabric, for test purpose(<code>TEST</code> bundle).</p>
+</div>
+<div class="paragraph">
+<p>At the card level, the attributes in the card telling OperatorFabric which template to use is the <code>details</code> attributes.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>{
+	"publisher":"TEST",
+	"publisherVersion":"1",
+	"processId":"process-000",
+	"startDate":1546297200000,
+	"severity":"INFORMATION",
+	"title":{"key":"process.title"},
+	"summary":{"key":"process.summary"},
+	"recipient":{
+		"type":"USER",
+		"identity":"tso1-operator"
+	},
+	"data":{"rootProp":"Data displayed in the detail panel"},
+	"details":[{"title":{"key":"process.detail.tab.first"}, "templateName":"template1"}]
+
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So here a single custom data is defined and it&#8217;s <code>rootProp</code>. This attribute is used by the template called by the <code>details</code> attribute. This attribute contains an array of <code>json</code> object containing an <code>i18n</code> key and a <code>template</code> reference. Each of those object is a tab in the detail panel of the GUI. The template to used are defined and configured in the <code>Third</code> bundle upload into the server by the publisher.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_displaying_rules">6.2.3. Displaying Rules</h4>
+<div class="sect4">
+<h5 id="_dates">Dates</h5>
+<div class="paragraph">
+<p>Dates impact both the feed rendering and the timeline rendering.</p>
+</div>
+<div class="paragraph">
+<p>In the feed cards are visible based on a collection of filters among which a
+time filter.</p>
+</div>
+<div class="paragraph">
+<p>In the time line cards are visible based on a similar filter plus the time line
+renders the "position" in time of said cards. By default it groups cards at
+close time in bubbles whom color indicates severity and inner number indicates
+number of cards.</p>
+</div>
+<div class="sect5">
+<h6 id="_start_date_startdate_2">Start Date (<code>startDate</code>)</h6>
+<div class="paragraph">
+<p>The card is only display after this date is reach by the current time. It&#8217;s a mandatory attributes for OperatorFabric cards.</p>
+</div>
+<div class="paragraph">
+<p>example:</p>
+</div>
+<div class="paragraph">
+<p>The current day is the 29 january of 2019.</p>
+</div>
+<div class="paragraph">
+<p>A card with the following configuration <code>"startDate":1548758040000</code>, has a start date equals to the iso date: "2019-01-29T10:34:00Z". So the operator will see it appearing in it&#8217;s feed at 10h34 AM universal time. And if there is no <code>endDate</code> defines for it, it will stay in the feed indefinitely, so this card should be still visible the 30th january of 2019. Before "10h34 AM universal time", this card was not visible in the feed.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_end_date_enddate_2">End Date (<code>endDate</code>)</h6>
+<div class="paragraph">
+<p>This optional attribute, corresponds to the moment after which the card will be remove from the feed of the GUI.</p>
+</div>
+<div class="paragraph">
+<p>example:</p>
+</div>
+<div class="paragraph">
+<p>Imagine that the current day is still the 29 january of 2019.</p>
+</div>
+<div class="paragraph">
+<p>The card we are looking after, has the same value for the startDate than in the previous example but has the following configuration for the <code>endDate</code>: <code>"endDate":1548765240000</code>. It&#8217;s corresponding to "2019-01-29T12:34:00Z" universal time.</p>
+</div>
+<div class="paragraph">
+<p>So our card is present in the feed between "11h34" and "13h34". Before and after those hours, the card is not available.</p>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_card_recipients">Recipients</h5>
+<div class="paragraph">
+<p>The attribute <code>recipient</code> of a card tells to whom it&#8217;s sent. It&#8217;s value format is an <a href="../api/#Recipient"><code>object named recipient</code></a> that describe the rule for recipient computation.</p>
+</div>
+<div class="paragraph">
+<p>The available types are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>GROUP</code></p>
+</li>
+<li>
+<p><code>USER</code></p>
+</li>
+<li>
+<p><code>UNION</code></p>
+</li>
+<li>
+<p><code>DEADEND</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The simplest way to determine the recipient is to assign the card to a <code>user</code> or a <code>group</code> as seen <a href="#_minimal_card">previously in  "Minimal Card"</a>.</p>
+</div>
+<div class="paragraph">
+<p>But it&#8217;s possible to combine groups and potentially users using <code>UNION</code>  type to have a better control on whom should receive the card.</p>
+</div>
+<div class="sect5">
+<h6 id="_union">UNION</h6>
+<div class="paragraph">
+<p>For example, if a card is destined to the operators of <code>TSO1</code> and <code>TSO2</code> and needs to be also seen by the <code>admin</code>, the recipient configuration looks like:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>"recipient":{"type":"UNION",
+	"recipients":[
+		{"type":"GROUP","identity":"TSO1"},
+		{"type":"GROUP","identity":"TSO2"},
+		{"type":"USER","identity":"admin"}
+		]
+	}</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_cards_consultation_service">7. Cards Consultation Service</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The User Interface depends on the Cards Consultation service to be notified of new cards and to consult existing cards,
+both current and archived.</p>
+</div>
+<div class="sect2">
+<h3 id="_archived_cards">7.1. Archived Cards</h3>
+<div class="sect3">
+<h4 id="_key_concepts">7.1.1. Key concepts</h4>
+<div class="paragraph">
+<p>Every time a card is published, in addition to being delivered to the users
+and persisted as a "current" card in MongoDB, it is also immediately
+persisted in the archived cards.</p>
+</div>
+<div class="paragraph">
+<p>Archived cards are similar in structure to current cards, but they are managed differently.
+Current cards are uniquely identified by their id (made up of the publisher and the process id).
+That is because if a new card is published with id as an existing card, it will replace it in the
+card collection. This way, the current card reflects the current state of a process instance.
+In the archived cards collection however, both cards will be kept, so that the archived cards
+show all the states that a given process instance went through.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_archives_screen_in_the_ui">7.1.2. Archives screen in the UI</h4>
+<div class="paragraph">
+<p>The Archives screen in the UI allows the users to query these archives with different filters.
+The layout of this screen is very similar to the Feed screen: the results are displayed in a
+(paginated) card list, and the user can display the associated card details by clicking a card in the list.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+The results of these queries are limited to cards that the user is allowed to see, either
+because they are direct recipient of the card or because they belong to a group that is a recipient
+of the card.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_archive_endpoints_in_the_card_consultation_api">7.1.3. Archive endpoints in the card-consultation API</h4>
+<div class="paragraph">
+<p>This Archives screen relies on dedicated endpoints in the card-consultation API, as described
+<a href="https://opfab.github.io/projects/services/core/cards-consultation/1.0.0.RELEASE/api/#Archives">here</a>.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 <div id="footer">
 <div id="footer-text">
 Version 1.0.0.RELEASE<br>
-Last updated 2020-03-30 15:34:34 +0200
+Last updated 2020-04-02 21:29:02 +0200
 </div>
 </div>
 </body>
