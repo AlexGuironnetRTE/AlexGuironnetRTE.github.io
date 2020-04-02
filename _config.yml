@@ -26,6 +26,14 @@ footer_text: >
 
 avatar: "/assets/img/logo_lfe_operatorfabric.png"
 
+sass:
+  sass_dir: assets/css
+# Needed to prevent the following error
+# Conversion error: Jekyll::Converters::Scss encountered an error while converting 'assets/css/main.css':
+# File to import not found or unreadable: bootstrap/bootstrap.
+# Load path: <repo_path>/vendor/bundle/ruby/2.5.0/gems/jekyll-theme-primer-0.5.4/_sass on line 1
+
+
 # Build settings
 markdown: kramdown
 plugins:
