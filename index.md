@@ -28,7 +28,7 @@ there are too many of them.
 The idea is to aggregate all the notifications from all these applications
 into a single screen, and to allow the operator to act on them if needed.
 
-![Feed screen layout](./assets/img/of_screenshots/feed_screenshot.png)
+![Feed screen layout](./assets/img/of_screenshots/feed_screenshot.png){:class="img-fluid"}
 
 These notifications are materialized by *cards* sorted in a *feed* according
 to their period of relevance and their severity.
