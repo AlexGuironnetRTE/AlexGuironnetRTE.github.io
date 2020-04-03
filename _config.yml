@@ -21,7 +21,7 @@ url: "https://alexguironnetrte.github.io" # the base hostname & protocol for you
 github_username:  opfab
 
 footer_text: >
-    Powered by <a href="https://jekyllrb.com/">Jekyll</a>
+    Powered by <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://getbootstrap.com/">Bootstrap</a>
     </br>Copyright 2020 <a href="http://www.rte-france.com/en">RTE</a>
 
 avatar: "/assets/img/logo_lfe_operatorfabric.png"
