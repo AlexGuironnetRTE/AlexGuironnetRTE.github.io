@@ -21,11 +21,8 @@
 - title: Community
   url: /documentation/community
 
-- title: Release notes
-  url: /documentation/release_notes
-
 - title: Roadmap
   url: /pages/roadmap.html
 
-- title: Archives
-  url: /pages/archives.html
+- title: Releases
+  url: /pages/releases.html
