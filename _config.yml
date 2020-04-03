@@ -34,6 +34,9 @@ sass:
 # File to import not found or unreadable: bootstrap/bootstrap.
 # Load path: <repo_path>/vendor/bundle/ruby/2.5.0/gems/jekyll-theme-primer-0.5.4/_sass on line 1
 
+# Site structure
+archives_path: "/archives/"
+
 
 # Build settings
 markdown: kramdown
@@ -51,11 +54,3 @@ plugins:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
-exclude:
-   - Gemfile
-   - Gemfile.lock
-   - node_modules
-   - vendor/bundle/
-   - vendor/cache/
-   - vendor/gems/
-   - vendor/ruby/
