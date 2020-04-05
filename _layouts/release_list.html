@@ -26,6 +26,10 @@ layout: default
         </th>
         <td><a href="{{ file.path | relative_url }}">Release Notes</a></li></td>
         <td><a href="{{ file.path | relative_url | replace: 'release_notes', 'single_page_doc' }}">Documentation</a></li></td>
+        <td><a href="{{ file.path | relative_url | replace: 'release_notes', 'single_page_doc' }}">Actions API</a></li></td>
+        <td><a href="{{ file.path | relative_url | replace: 'release_notes', 'single_page_doc' }}">Cards API</a></li></td>
+        <td><a href="{{ file.path | relative_url | replace: 'release_notes', 'single_page_doc' }}">Thirds API</a></li></td>
+        <td><a href="{{ file.path | relative_url | replace: 'release_notes', 'single_page_doc' }}">Users API</a></li></td>
     </tr>
 
     {% endfor %}

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>OperatorFabric</title>
+<title>Untitled</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,153 +439,22 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
-<h1>OperatorFabric</h1>
 </div>
 <div id="content">
 <div class="paragraph">
-<p><span class="image"><a class="image" href="https://www.mozilla.org/en-US/MPL/2.0/"><img src="https://img.shields.io/badge/license-MPL_2.0-blue.svg" alt="MPL-2.0 License"></a></span>
-<span class="image"><a class="image" href="https://travis-ci.org/opfab/operatorfabric-core"><img src="https://travis-ci.org/opfab/operatorfabric-core.svg?branch=master" alt="Build Status"></a></span>
-<span class="image"><a class="image" href="https://sonarcloud.io/dashboard?id=org.lfenergy.operatorfabric%3Aoperatorfabric-core"><img src="https://sonarcloud.io/api/project_badges/measure?project=org.lfenergy.operatorfabric%3Aoperatorfabric-core&amp;metric=alert_status" alt="Quality Gate"></a></span>
-<span class="image"><a class="image" href="https://sonarcloud.io/component_measures?id=org.lfenergy.operatorfabric%3Aoperatorfabric-core&amp;metric=Coverage"><img src="https://sonarcloud.io/api/project_badges/measure?project=org.lfenergy.operatorfabric%3Aoperatorfabric-core&amp;metric=coverage" alt="Coverage"></a></span>
-<span class="image"><a class="image" href="https://sonarcloud.io/component_measures?id=org.lfenergy.operatorfabric%3Aoperatorfabric-core&amp;metric=Maintainability"><img src="https://sonarcloud.io/api/project_badges/measure?project=org.lfenergy.operatorfabric%3Aoperatorfabric-core&amp;metric=code_smells" alt="Code Smells"></a></span>
-<span class="image"><a class="image" href="http://opfab.github.io/"><img src="https://img.shields.io/website-up-down-green-red/http/opfab.github.io.svg" alt="Website opfab.github.io"></a></span>
-<span class="image"><a class="image" href="https://spectrum.chat/opfab"><img src="https://img.shields.io/badge/Join%20us%20on-Spectrum-%237473C0.svg" alt="Join us on Spectrum"></a></span></p>
+<p>Write docs with level 1 title (so they can be used on their own) + level offset (except for really short bits)</p>
 </div>
 <div class="paragraph">
-<p>OperatorFabric is a modular, extensible, industrial-strength and field-tested
-platform for use in electricity, water, and other utility operations.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>System visualization and console integration</p>
-</li>
-<li>
-<p>Precise alerting</p>
-</li>
-<li>
-<p>Workflow scheduling</p>
-</li>
-<li>
-<p>Historian</p>
-</li>
-<li>
-<p>Scripting (ex: Python, JavaScript)</p>
-</li>
-</ul>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-Workflow Scheduling could be addressed either as an internal module or
-through simplified and standardized (BPMN) integration with external workflow
-engines, we&#8217;re still weighing the pros and cons of the two options._
-</td>
-</tr>
-</table>
+<p>All includes are defined based on root dir</p>
 </div>
 <div class="paragraph">
-<p>It is an open source project initiated by <a href="http://www.rte-france.com/">RTE</a>
-with <a href="https://www.lfenergy.org/">LF Energy</a>.</p>
-</div>
-<div class="paragraph">
-<p>To perform their duties, an operator has to interact with multiple applications
-(perform actions, watch for alerts, etc.), which can prove difficult if
-there are too many of them.</p>
-</div>
-<div class="paragraph">
-<p>The idea is to aggregate all the notifications from all these applications
-into a single screen, and to allow the operator to act on them if needed.</p>
-</div>
-<div class="imageblock text-center">
-<div class="content">
-<img src="./images/feed_screenshot.png" alt="Feed screen layout" width="450">
-</div>
-</div>
-<div class="paragraph">
-<p>These notifications are materialized by <strong>cards</strong> sorted in a <strong>feed</strong> according
-to their period of relevance and their severity.
-When a card is selected in the feed, the right-hand pane displays the <strong>details</strong>
-of the card: information about the state of the parent process instance in
-the third-party application that published it, available actions, etc.</p>
-</div>
-<div class="paragraph">
-<p>In addition, the cards will also translate as events displayed on a <strong>timeline</strong>
-(its design is still under discussion) at the top of the screen.
-This view will be complimentary to the card feed in that it will allow the
-operator to see at a glance the status of processes for a given period,
-when the feed is more like a "To Do" list.</p>
-</div>
-<div class="paragraph">
-<p>Part of the value of OperatorFabric is that it makes the integration very
-simple on the part of the third-party applications.
-To start publishing cards to users in an OperatorFabric instance, all they
-have to do is:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Register as a publisher through the "Thirds" service and provide a "bundle"
-containing handlebars templates defining how cards should be rendered,
-i18n info etc.</p>
-</li>
-<li>
-<p>Publish cards as json containing card data through the card publication API</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>OperatorFabric will then:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Dispatch the cards to the appropriate users (by computing the actual users
-who should receive the card from the recipients rules defined in the card)</p>
-</li>
-<li>
-<p>Take care of the rendering of the cards, displaying details, actions,
-inputs etc.</p>
-</li>
-<li>
-<p>Display relevant information from the cards in the timeline</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Another aim of OperatorFabric is to make cooperation easier by letting
-operators forward or send cards to other operators, for example:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>If they need an input from another operator</p>
-</li>
-<li>
-<p>If they can&#8217;t handle a given card for lack of time or because the necessary
-action is out of their scope</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>This will replace phone calls or emails, making cooperation more efficient
-and traceable.</p>
-</div>
-<div class="paragraph">
-<p>For instance, operators might be interested in knowing why a given decision
-was made in the past:
-the cards detailing the decision process steps will be accessible through
-the Archives screen, showing how the
-operators reached this agreement.</p>
+<p>asciidoctor index.adoc -a imagesdir=images</p>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-03-31 21:44:28 +0200
+Version 1.0.0.RELEASE<br>
+Last updated 2020-04-05 15:46:20 +0200
 </div>
 </div>
 </body>

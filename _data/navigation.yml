@@ -18,6 +18,17 @@
     - title: Development Environment
       url: /documentation/dev_env
 
+- title: APIs
+  sublinks:
+    - title: Actions
+      url: /documentation/architecture
+    - title: Cards
+      url: /documentation/reference_doc
+    - title: Thirds
+      url: /documentation/CICD
+    - title: Users
+      url: /documentation/dev_env
+
 - title: Community
   url: /documentation/community
 
