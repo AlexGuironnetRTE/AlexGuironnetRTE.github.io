@@ -2,35 +2,35 @@
   url: /
 
 - title: Getting Started
-  url: /documentation/getting_started
+  url: /documentation/current/getting_started
 
 - title: Documentation
-  url: /documentation/single_page_doc.html
+  url: /documentation/current/single_page_doc.html
   sublinks:
     - title: Architecture
-      url: /documentation/architecture
+      url: /documentation/current/architecture
     - title: Reference documentation
-      url: /documentation/reference_doc
+      url: /documentation/current/reference_doc
     - title: Deployment
-      url: /documentation/deployment
+      url: /documentation/current/deployment
     - title: CICD
-      url: /documentation/CICD
+      url: /documentation/current/CICD
     - title: Development Environment
-      url: /documentation/dev_env
+      url: /documentation/current/dev_env
 
 - title: APIs
   sublinks:
     - title: Actions
-      url: /documentation/architecture
+      url: /documentation/current/api/actions
     - title: Cards
-      url: /documentation/reference_doc
+      url: /documentation/current/api/cards
     - title: Thirds
-      url: /documentation/CICD
+      url: /documentation/current/api/thirds
     - title: Users
-      url: /documentation/dev_env
+      url: /documentation/current/api/users
 
 - title: Community
-  url: /documentation/community
+  url: /documentation/current/community
 
 - title: Roadmap
   url: /pages/roadmap.html
